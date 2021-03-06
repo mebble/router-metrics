@@ -26,4 +26,12 @@ describe('downSpeedMetric', () => {
 
         expect(metric.labels).toEqual(expectedLabels);
     });
+
+    test('should map metric value', () => {
+        const expectedValue = 1.2;
+
+        const metric = downSpeedMetric(baseInput);
+
+        expect(metric.value).toEqual(expectedValue);
+    });
 });
