@@ -1,5 +1,5 @@
 import { DeviceOnline, DeviceMetricLabels } from './types';
-import { downSpeedMetric } from './mapper';
+import { downSpeedMetric, upSpeedMetric } from './mapper';
 
 const baseInput: DeviceOnline = {
     qosListHostname: "hostname",
@@ -33,5 +33,19 @@ describe('downSpeedMetric', () => {
         const metric = downSpeedMetric(baseInput);
 
         expect(metric.value).toEqual(expectedValue);
+    });
+});
+
+describe('upSpeedMetric', () => {
+    test('should map metric labels', () => {
+        const expectedLabels: DeviceMetricLabels = {
+            deviceName: baseInput.qosListHostname,
+            deviceMac: baseInput.qosListMac,
+            connectionType: baseInput.qosListConnectType
+        };
+
+        const metric = upSpeedMetric(baseInput);
+
+        expect(metric.labels).toEqual(expectedLabels);
     });
 });
