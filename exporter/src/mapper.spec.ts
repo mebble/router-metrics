@@ -48,4 +48,12 @@ describe('upSpeedMetric', () => {
 
         expect(metric.labels).toEqual(expectedLabels);
     });
+
+    test('should map metric value', () => {
+        const expectedValue = 1.3;
+
+        const metric = upSpeedMetric(baseInput);
+
+        expect(metric.value).toEqual(expectedValue);
+    });
 });
