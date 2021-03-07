@@ -69,9 +69,17 @@ describe('set speed metric', () => {
 
         setSpeedMetric(devices);
 
-        expect(labels.firstCall.calledWithExactly(sinon.match(devices[0].labels))).toBe(true);
-        expect(set.firstCall.calledWithExactly(devices[0].value)).toBe(true);
-        expect(labels.secondCall.calledWithExactly(sinon.match(devices[1].labels))).toBe(true);
-        expect(set.secondCall.calledWithExactly(devices[1].value)).toBe(true);
+        expect(labels.firstCall.calledWithExactly({
+            deviceName: 'name1',
+            deviceMac: 'mac1',
+            connectionType: 'type1',
+        })).toBe(true);
+        expect(set.firstCall.calledWithExactly(10)).toBe(true);
+        expect(labels.secondCall.calledWithExactly({
+            deviceName: 'name2',
+            deviceMac: 'mac2',
+            connectionType: 'type2',
+        })).toBe(true);
+        expect(set.secondCall.calledWithExactly(20)).toBe(true);
     });
 });
