@@ -9,11 +9,17 @@ Exports Prometheus metrics from the router
 
 ## Setup
 
-Go to this project's root directory and install dependencies
+Go to this project's root directory and install dependencies:
 
 ```bash
 cd exporter
 npm install
+```
+
+Create a `.env` file by copying the `.env.sample` and giving the variables your desired values:
+
+```bash
+cp .env.sample .env
 ```
 
 ## Development
