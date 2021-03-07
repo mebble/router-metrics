@@ -25,4 +25,39 @@ describe('getDevices', () => {
 
         expect(res).toEqual([]);
     });
+
+    test('should return parsed array when upstream response returns non-empty onlineList', async () => {
+        const expected: DeviceOnline[] = [
+            {
+                qosListHostname: "host1",
+                qosListRemark: "remark1",
+                qosListIP: "ip1",
+                qosListConnectType: "conn1",
+                qosListMac: "mac1",
+                qosListDownSpeed: "downSpeed1",
+                qosListUpSpeed: "upSpeed1",
+                qosListDownLimit: "downLimit1",
+                qosListUpLimit: "upLimit1",
+                qosListAccess: "listAccess1",
+            },
+            {
+                qosListHostname: "host2",
+                qosListRemark: "remark2",
+                qosListIP: "ip2",
+                qosListConnectType: "conn2",
+                qosListMac: "mac2",
+                qosListDownSpeed: "downSpeed2",
+                qosListUpSpeed: "upSpeed2",
+                qosListDownLimit: "downLimit2",
+                qosListUpLimit: "upLimit2",
+                qosListAccess: "listAccess2",
+            },
+        ];
+        const fetch = stubFetcher(expected);
+        const getDevices = router(fetch);
+
+        const res = await getDevices();
+
+        expect(res).toEqual(expected);
+    });
 });
