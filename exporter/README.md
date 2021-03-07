@@ -44,3 +44,8 @@ Compile the server and run it:
 npm run build
 npm start
 ```
+
+## TODOs
+
+- Ensure node version match on @types/node, CI, box.
+- Decide how to handle non-2xx response from router. How should we relay this to Prometheus? Empty response? With an error as well?
