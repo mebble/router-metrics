@@ -12,6 +12,24 @@ describe('set speed metric', () => {
         name: 'some_name',
         help: 'some_help'
     });
+    const devices: DeviceMetric[] = [
+        {
+            value: 10,
+            labels: {
+                deviceName: 'name1',
+                deviceMac: 'mac1',
+                connectionType: 'type1',
+            }
+        },
+        {
+            value: 20,
+            labels: {
+                deviceName: 'name2',
+                deviceMac: 'mac2',
+                connectionType: 'type2',
+            }
+        },
+    ];
 
     test('should not set gauge when no device metrics given', () => {
         const setSpy = sinon.spy(gauge, "set");
@@ -25,24 +43,6 @@ describe('set speed metric', () => {
     test('should set the gauge for every device metric given', () => {
         const setSpy = sinon.spy(gauge, "set");
         const setSpeedMetric = speed(gauge);
-        const devices: DeviceMetric[] = [
-            {
-                value: 10,
-                labels: {
-                    deviceName: 'name1',
-                    deviceMac: 'mac1',
-                    connectionType: 'type1',
-                }
-            },
-            {
-                value: 20,
-                labels: {
-                    deviceName: 'name2',
-                    deviceMac: 'mac2',
-                    connectionType: 'type2',
-                }
-            },
-        ];
 
         setSpeedMetric(devices);
 
