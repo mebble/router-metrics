@@ -32,20 +32,28 @@ describe('set speed metric', () => {
     ];
 
     test('should not set gauge when no device metrics given', () => {
-        const setSpy = sinon.spy(gauge, "set");
+        const gaugeInternal = gauge.labels();
+        const labelsStub = sinon.stub(gauge, "labels");
+        labelsStub.returns(gaugeInternal)
+        const setSpy = sinon.spy(gaugeInternal, "set");
         const setSpeedMetric = speed(gauge);
 
         setSpeedMetric([]);
 
+        expect(labelsStub.notCalled).toBe(true);
         expect(setSpy.notCalled).toBe(true);
     });
 
     test('should set the gauge for every device metric given', () => {
-        const setSpy = sinon.spy(gauge, "set");
+        const gaugeInternal = gauge.labels();
+        const labelsStub = sinon.stub(gauge, "labels");
+        labelsStub.returns(gaugeInternal)
+        const setSpy = sinon.spy(gaugeInternal, "set");
         const setSpeedMetric = speed(gauge);
 
         setSpeedMetric(devices);
 
+        expect(labelsStub.calledTwice).toBe(true);
         expect(setSpy.calledTwice).toBe(true);
     });
 });

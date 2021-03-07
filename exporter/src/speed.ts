@@ -3,6 +3,6 @@ import { DeviceMetric, DeviceMetricLabels } from './types';
 
 export const speed = (gauge: Gauge<keyof DeviceMetricLabels>) => (devices: DeviceMetric[]) => {
     for (const _device of devices) {
-        gauge.set({}, 0);
+        gauge.labels({}).set(0);
     }
 };
