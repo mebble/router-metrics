@@ -1,7 +1,19 @@
 import sinon from 'sinon';
 import { Gauge } from 'prom-client';
 import { speed } from './speed';
-import { DeviceMetric } from './types';
+import { DeviceMetric, DeviceMetricLabels } from './types';
+
+const setupLabelsAndSet = (gauge: Gauge<keyof DeviceMetricLabels>) => {
+    const gaugeInternal = gauge.labels();
+    const labelsStub = sinon.stub(gauge, "labels");
+    labelsStub.returns(gaugeInternal)
+    const setSpy = sinon.spy(gaugeInternal, "set");
+
+    return {
+        labels: labelsStub,
+        set: setSpy
+    };
+};
 
 afterEach(() => {
     sinon.restore();
@@ -32,43 +44,34 @@ describe('set speed metric', () => {
     ];
 
     test('should not set gauge when no device metrics given', () => {
-        const gaugeInternal = gauge.labels();
-        const labelsStub = sinon.stub(gauge, "labels");
-        labelsStub.returns(gaugeInternal)
-        const setSpy = sinon.spy(gaugeInternal, "set");
+        const { labels, set } = setupLabelsAndSet(gauge);
         const setSpeedMetric = speed(gauge);
 
         setSpeedMetric([]);
 
-        expect(labelsStub.notCalled).toBe(true);
-        expect(setSpy.notCalled).toBe(true);
+        expect(labels.notCalled).toBe(true);
+        expect(set.notCalled).toBe(true);
     });
 
     test('should set the gauge for every device metric given', () => {
-        const gaugeInternal = gauge.labels();
-        const labelsStub = sinon.stub(gauge, "labels");
-        labelsStub.returns(gaugeInternal)
-        const setSpy = sinon.spy(gaugeInternal, "set");
+        const { labels, set } = setupLabelsAndSet(gauge);
         const setSpeedMetric = speed(gauge);
 
         setSpeedMetric(devices);
 
-        expect(labelsStub.calledTwice).toBe(true);
-        expect(setSpy.calledTwice).toBe(true);
+        expect(labels.calledTwice).toBe(true);
+        expect(set.calledTwice).toBe(true);
     });
 
     test('should set the gauge with device metric value and labels', () => {
-        const gaugeInternal = gauge.labels();
-        const labelsStub = sinon.stub(gauge, "labels");
-        labelsStub.returns(gaugeInternal)
-        const setSpy = sinon.spy(gaugeInternal, "set");
+        const { labels, set } = setupLabelsAndSet(gauge);
         const setSpeedMetric = speed(gauge);
 
         setSpeedMetric(devices);
 
-        expect(labelsStub.firstCall.calledWithExactly(sinon.match(devices[0].labels))).toBe(true);
-        expect(setSpy.firstCall.calledWithExactly(devices[0].value)).toBe(true);
-        expect(labelsStub.secondCall.calledWithExactly(sinon.match(devices[1].labels))).toBe(true);
-        expect(setSpy.secondCall.calledWithExactly(devices[1].value)).toBe(true);
+        expect(labels.firstCall.calledWithExactly(sinon.match(devices[0].labels))).toBe(true);
+        expect(set.firstCall.calledWithExactly(devices[0].value)).toBe(true);
+        expect(labels.secondCall.calledWithExactly(sinon.match(devices[1].labels))).toBe(true);
+        expect(set.secondCall.calledWithExactly(devices[1].value)).toBe(true);
     });
 });
