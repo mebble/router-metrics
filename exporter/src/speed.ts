@@ -1,6 +1,8 @@
 import { Gauge } from 'prom-client';
 import { DeviceMetric, DeviceMetricLabels } from './types';
 
-export const speed = (_gauge: Gauge<keyof DeviceMetricLabels>) => (_devices: DeviceMetric[]) => {
-
+export const speed = (gauge: Gauge<keyof DeviceMetricLabels>) => (devices: DeviceMetric[]) => {
+    for (const _device of devices) {
+        gauge.set({}, 0);
+    }
 };
