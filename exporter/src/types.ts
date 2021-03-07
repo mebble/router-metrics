@@ -1,3 +1,5 @@
+import { RequestInfo, RequestInit, Response } from 'node-fetch';
+
 export type DeviceOnline = {
     qosListHostname: string;
     qosListRemark: string;
@@ -21,3 +23,8 @@ export type DeviceMetric = {
     value: number;
     labels: DeviceMetricLabels;
 }
+
+export type Fetcher = (
+    url: RequestInfo,
+    init?: RequestInit
+) => Promise<Response>;
