@@ -1,9 +1,9 @@
 import sinon from 'sinon';
 import { Response } from 'node-fetch';
-import { Fetcher, DeviceOnline } from './types';
+import { DeviceOnline } from './types';
 import { router } from './router';
 
-const stubFetcher = (devices: DeviceOnline[]): Fetcher => {
+const stubFetcher = (devices: DeviceOnline[]): sinon.SinonStub => {
     const upstreamBody = JSON.stringify({ onlineList: devices });
     const response = new Response();
     sinon.stub(response, "text").returns(Promise.resolve(upstreamBody));
@@ -19,7 +19,7 @@ afterEach(() => {
 describe('getDevices', () => {
     test('should return empty array when upstream response returns empty onlineList', async () => {
         const fetch = stubFetcher([]);
-        const getDevices = router(fetch);
+        const getDevices = router(fetch, '');
 
         const res = await getDevices();
 
@@ -54,10 +54,20 @@ describe('getDevices', () => {
             },
         ];
         const fetch = stubFetcher(expected);
-        const getDevices = router(fetch);
+        const getDevices = router(fetch, '');
 
         const res = await getDevices();
 
         expect(res).toEqual(expected);
+    });
+
+    test('should call the fetcher with the given url', async () => {
+        const fetch = stubFetcher([]);
+        const url = 'http://example.com';
+        const getDevices = router(fetch, url);
+
+        await getDevices();
+
+        expect(fetch.calledOnceWith(url)).toBe(true);
     });
 });
