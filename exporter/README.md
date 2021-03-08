@@ -49,3 +49,7 @@ npm start
 
 - Ensure node version match on @types/node, CI, box.
 - Decide how to handle non-2xx response from router. How should we relay this to Prometheus? Empty response? With an error as well?
+
+## Challenges
+
+- Sinon stubbing overloaded methods: [issue #36436](https://github.com/DefinitelyTyped/DefinitelyTyped/issues/36436) and [PR #42042](https://github.com/DefinitelyTyped/DefinitelyTyped/pull/42042)
