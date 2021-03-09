@@ -13,7 +13,7 @@ export const downSpeedMetric = (device: DeviceOnline): DeviceMetric => {
 
 export const upSpeedMetric = (device: DeviceOnline): DeviceMetric => {
     return {
-        value: parseFloat(device.qosListUpSpeed),
+        value: parseFloat(device.qosListUpSpeed) * 1000,
         labels: {
             deviceName: device.qosListHostname,
             deviceMac: device.qosListMac,
