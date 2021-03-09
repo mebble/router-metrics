@@ -22,9 +22,14 @@ export type DeviceMetricLabels = {
 export type DeviceMetric = {
     value: number;
     labels: DeviceMetricLabels;
-}
+};
 
 export type Fetcher = (
     url: RequestInfo,
     init?: RequestInit
 ) => Promise<Response>;
+
+export type MetricInfo = {
+    name: string;
+    help: string;
+};
