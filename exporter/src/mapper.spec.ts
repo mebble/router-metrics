@@ -7,8 +7,8 @@ const baseInput: DeviceOnline = {
     qosListIP: "ip",
     qosListConnectType: "conn-type",
     qosListMac: "mac",
-    qosListDownSpeed: "1.2",
     qosListUpSpeed: "1.3",
+    qosListDownSpeed: "1.23",
     qosListDownLimit: "100.00",
     qosListUpLimit: "200.00",
     qosListAccess: "list-access",
@@ -27,8 +27,8 @@ describe('downSpeedMetric', () => {
         expect(metric.labels).toEqual(expectedLabels);
     });
 
-    test('should map metric value', () => {
-        const expectedValue = 1.2;
+    test('should map metric value from kilobytes per sec to bytes per sec', () => {
+        const expectedValue = 1230;
 
         const metric = downSpeedMetric(baseInput);
 
