@@ -1,6 +1,7 @@
 import sinon from 'sinon';
 import { Response } from 'node-fetch';
 import { DeviceOnline } from './types';
+import { RouterPaths } from './constants';
 import { router } from './router';
 
 const stubFetcher = (devices: DeviceOnline[]): sinon.SinonStub => {
@@ -19,7 +20,7 @@ afterEach(() => {
 describe('getDevices', () => {
     test('should return empty array when upstream response returns empty onlineList', async () => {
         const fetch = stubFetcher([]);
-        const getDevices = router(fetch, '');
+        const getDevices = router(fetch);
 
         const res = await getDevices();
 
@@ -54,20 +55,20 @@ describe('getDevices', () => {
             },
         ];
         const fetch = stubFetcher(expected);
-        const getDevices = router(fetch, '');
+        const getDevices = router(fetch);
 
         const res = await getDevices();
 
         expect(res).toEqual(expected);
     });
 
-    test('should call the fetcher with the given url', async () => {
+    test('should call the fetcher with the expected url', async () => {
         const fetch = stubFetcher([]);
-        const url = 'http://example.com';
-        const getDevices = router(fetch, url);
+        const expectedUrl = `${process.env.ROUTER_HOST}:${process.env.ROUTER_PORT}${RouterPaths.OnlineList}`;
+        const getDevices = router(fetch);
 
         await getDevices();
 
-        expect(fetch.calledOnceWith(url)).toBe(true);
+        expect(fetch.calledOnceWith(expectedUrl)).toBe(true);
     });
 });
