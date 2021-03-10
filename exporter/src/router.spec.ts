@@ -64,7 +64,7 @@ describe('getDevices', () => {
 
     test('should call the fetcher with the expected url', async () => {
         const fetch = stubFetcher([]);
-        const expectedUrl = `${process.env.ROUTER_HOST}:${process.env.ROUTER_PORT}${RouterPaths.OnlineList}`;
+        const expectedUrl = `http://${process.env.ROUTER_HOST}:${process.env.ROUTER_PORT}${RouterPaths.OnlineList}`;
         const getDevices = router(fetch);
 
         await getDevices();
