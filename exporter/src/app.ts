@@ -21,6 +21,10 @@ export const createApp = () => {
 
     const app = express();
 
+    app.use((req, res, next) => {
+        console.log(new Date().toLocaleString(), req.originalUrl);
+        next();
+    });
     app.get('/ping', (req, res) => {
         res.send('pong!');
     });
