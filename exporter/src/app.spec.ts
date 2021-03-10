@@ -27,7 +27,47 @@ describe('app download metrics', () => {
         const expectedResponse = dedent`
             # HELP ${DownloadMetric.name} ${DownloadMetric.help}
             # TYPE ${DownloadMetric.name} gauge
-        `;
+        ` + '\n';
+
+        const response = await request.get('/metrics').expect(200);
+
+        expect(response.text).toEqual(expectedResponse);
+    });
+
+    test('should return metrics when the router returns online devices', async () => {
+        routerMock.get(RouterPaths.OnlineList)
+            .reply(200, dedent`
+                {
+                    "onlineList": [{
+                        "qosListHostname": "OnePlus3T",
+                        "qosListRemark": "",
+                        "qosListIP": "",
+                        "qosListConnectType": "wifi",
+                        "qosListMac": "mac",
+                        "qosListDownSpeed": "6.23",
+                        "qosListUpSpeed": "1.97",
+                        "qosListDownLimit": "",
+                        "qosListUpLimit": "",
+                        "qosListAccess": ""
+                    }, {
+                        "qosListHostname": "iPhone",
+                        "qosListRemark": "",
+                        "qosListIP": "",
+                        "qosListConnectType": "wifi",
+                        "qosListMac": "iPhoneMac",
+                        "qosListDownSpeed": "23.01",
+                        "qosListUpSpeed": "9.0",
+                        "qosListDownLimit": "",
+                        "qosListUpLimit": "",
+                        "qosListAccess": ""
+                    }]
+                }`, { 'content-type': 'text/plain' });
+        const expectedResponse = dedent`
+            # HELP ${DownloadMetric.name} ${DownloadMetric.help}
+            # TYPE ${DownloadMetric.name} gauge
+            ${DownloadMetric.name}{deviceName="OnePlus3T",deviceMac="mac",connectionType="wifi"} 6230
+            ${DownloadMetric.name}{deviceName="iPhone",deviceMac="iPhoneMac",connectionType="wifi"} 23010
+        ` + '\n';
 
         const response = await request.get('/metrics').expect(200);
 
