@@ -2,11 +2,12 @@ import express from 'express';
 import { Gauge, Registry } from 'prom-client';
 import fetch from 'node-fetch';
 
-import { DownloadMetric } from './constants';
-import { DeviceMetricLabels } from './types';
+import { DownloadMetric, RouterUpMetric } from './constants';
+import { DeviceMetricLabels, DeviceOnline } from './types';
 import { router } from './router';
 import { downSpeedMetric } from './mapper';
 import { speed } from './speed';
+import dedent from 'dedent';
 
 export const createApp = () => {
     const getDevices = router(fetch);
@@ -29,7 +30,20 @@ export const createApp = () => {
         res.send('pong!');
     });
     app.get('/metrics', async (req, res) => {
-        const devices = await getDevices();
+        let devices: DeviceOnline[] = [];
+        try {
+            devices = await getDevices();
+        } catch (error) {
+            res.send(dedent`
+                # HELP ${RouterUpMetric.name} ${RouterUpMetric.help}
+                # TYPE ${RouterUpMetric.name} gauge
+                ${RouterUpMetric.name} 0
+
+                # HELP ${DownloadMetric.name} ${DownloadMetric.help}
+                # TYPE ${DownloadMetric.name} gauge
+            ` + '\n');
+            return;
+        }
         const downloadSpeeds = devices.map(downSpeedMetric);
         setDownloadSpeeds(downloadSpeeds);
 
