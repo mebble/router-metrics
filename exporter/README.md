@@ -48,7 +48,7 @@ npm start
 ## TODOs
 
 - [ ] Ensure node version match on @types/node, CI, box.
-- [ ] Decide how to handle non-2xx response from router. How should we relay this to Prometheus? Empty response? With an error as well? Ans:
+- [x] Decide how to handle non-2xx response from router. How should we relay this to Prometheus? Empty response? With an error as well? Ans:
     - [Prometheus exporter guide](https://prometheus.io/docs/instrumenting/writing_exporters/#failed-scrapes)
     - [Up timeseries](https://prometheus.io/docs/concepts/jobs_instances/)
 
