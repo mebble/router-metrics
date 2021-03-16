@@ -13,6 +13,15 @@ const stubFetcher = (devices: DeviceOnline[]): sinon.SinonStub => {
     return fetch;
 };
 
+const stubErrorFetcher = (statusCode: number): sinon.SinonStub => {
+    const response = new Response();
+    sinon.stub(response, "ok").get(() => false);
+    sinon.stub(response, "status").get(() => statusCode);
+    const fetch = sinon.stub().returns(Promise.resolve(response));
+
+    return fetch;
+};
+
 afterEach(() => {
     sinon.restore();
 });
@@ -35,6 +44,14 @@ describe('getDevices', () => {
         const res = await getDevices();
 
         expect(res).toEqual([]);
+    });
+
+    test('should return error when upstream returns non-2xx response', async () => {
+        const fetch = stubErrorFetcher(503);
+        const getDevices = router(fetch);
+        const expected = new Error('Router returned HTTP status code 503');
+
+        await expect(getDevices()).rejects.toThrow(expected);
     });
 
     test('should return parsed array when upstream response returns non-empty onlineList', async () => {
