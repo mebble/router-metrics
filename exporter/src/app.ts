@@ -48,6 +48,7 @@ export const createApp = () => {
             routerUpGauge.set(1);
         } catch (error) {
             routerUpGauge.set(0);
+            console.error(error);
         }
         const downloadSpeeds = devices.map(downSpeedMetric);
         setDownloadSpeeds(downloadSpeeds);

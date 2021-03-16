@@ -1,11 +1,11 @@
 {
   "name": "exporter",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "An exporter of router metrics",
   "private": true,
   "main": "dist/index.js",
   "scripts": {
-    "test": "npx jest",
+    "test": "npx jest --silent",
     "build": "tsc",
     "dev": "concurrently \"tsc -w\" \"nodemon dist/index.js\"",
     "start": "node ."
