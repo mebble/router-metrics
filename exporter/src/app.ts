@@ -11,13 +11,19 @@ import dedent from 'dedent';
 
 export const createApp = () => {
     const getDevices = router(fetch);
+    const routerUpGauge = new Gauge({
+        name: RouterUpMetric.name,
+        help: RouterUpMetric.help,
+    });
     const downloadSpeedGauge = new Gauge<keyof DeviceMetricLabels>({
         name: DownloadMetric.name,
         help: DownloadMetric.help,
         labelNames: ['device_name', 'device_mac', 'connection_type'],
     });
     const setDownloadSpeeds = speed(downloadSpeedGauge);
+
     const registry = new Registry();
+    registry.registerMetric(routerUpGauge);
     registry.registerMetric(downloadSpeedGauge);
 
     const app = express();
@@ -33,16 +39,9 @@ export const createApp = () => {
         let devices: DeviceOnline[] = [];
         try {
             devices = await getDevices();
+            routerUpGauge.set(1);
         } catch (error) {
-            res.send(dedent`
-                # HELP ${RouterUpMetric.name} ${RouterUpMetric.help}
-                # TYPE ${RouterUpMetric.name} gauge
-                ${RouterUpMetric.name} 0
-
-                # HELP ${DownloadMetric.name} ${DownloadMetric.help}
-                # TYPE ${DownloadMetric.name} gauge
-            ` + '\n');
-            return;
+            routerUpGauge.set(0);
         }
         const downloadSpeeds = devices.map(downSpeedMetric);
         setDownloadSpeeds(downloadSpeeds);

@@ -38,10 +38,14 @@ describe('app download metrics', () => {
         expect(response.text).toEqual(expectedResponse);
     });
 
-    test('should return no download metrics when the router returns empty online devices list', async () => {
+    test('should return no download metrics and one router_up metric when the router returns empty online devices list', async () => {
         routerMock.get(RouterPaths.OnlineList)
             .reply(200, '{"onlineList": []}', { 'content-type': 'text/plain' });
         const expectedResponse = dedent`
+            # HELP ${RouterUpMetric.name} ${RouterUpMetric.help}
+            # TYPE ${RouterUpMetric.name} gauge
+            ${RouterUpMetric.name} 1
+
             # HELP ${DownloadMetric.name} ${DownloadMetric.help}
             # TYPE ${DownloadMetric.name} gauge
         ` + '\n';
@@ -51,7 +55,7 @@ describe('app download metrics', () => {
         expect(response.text).toEqual(expectedResponse);
     });
 
-    test('should return metrics when the router returns online devices', async () => {
+    test('should return download metrics and one router_up metric when the router returns online devices', async () => {
         routerMock.get(RouterPaths.OnlineList)
             .reply(200, dedent`
                 {
@@ -80,6 +84,10 @@ describe('app download metrics', () => {
                     }]
                 }`, { 'content-type': 'text/plain' });
         const expectedResponse = dedent`
+            # HELP ${RouterUpMetric.name} ${RouterUpMetric.help}
+            # TYPE ${RouterUpMetric.name} gauge
+            ${RouterUpMetric.name} 1
+
             # HELP ${DownloadMetric.name} ${DownloadMetric.help}
             # TYPE ${DownloadMetric.name} gauge
             ${DownloadMetric.name}{device_name="OnePlus3T",device_mac="mac",connection_type="wifi"} 6230
