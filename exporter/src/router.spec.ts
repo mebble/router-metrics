@@ -18,6 +18,16 @@ afterEach(() => {
 });
 
 describe('getDevices', () => {
+    test('should call the fetcher with the expected url', async () => {
+        const fetch = stubFetcher([]);
+        const expectedUrl = `http://${process.env.ROUTER_HOST}:${process.env.ROUTER_PORT}${RouterPaths.OnlineList}`;
+        const getDevices = router(fetch);
+
+        await getDevices();
+
+        expect(fetch.calledOnceWith(expectedUrl)).toBe(true);
+    });
+
     test('should return empty array when upstream response returns empty onlineList', async () => {
         const fetch = stubFetcher([]);
         const getDevices = router(fetch);
@@ -60,15 +70,5 @@ describe('getDevices', () => {
         const res = await getDevices();
 
         expect(res).toEqual(expected);
-    });
-
-    test('should call the fetcher with the expected url', async () => {
-        const fetch = stubFetcher([]);
-        const expectedUrl = `http://${process.env.ROUTER_HOST}:${process.env.ROUTER_PORT}${RouterPaths.OnlineList}`;
-        const getDevices = router(fetch);
-
-        await getDevices();
-
-        expect(fetch.calledOnceWith(expectedUrl)).toBe(true);
     });
 });
