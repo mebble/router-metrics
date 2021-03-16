@@ -42,6 +42,7 @@ The JSON model will be updated regularly, so these screenshots are likely to be 
     ```
     Output:
     ```bash
+    # HELP router_up Indicates whether the router is up. 0 means it is not up, and 1 means it is up
     # TYPE router_up gauge
     router_up 1
 
