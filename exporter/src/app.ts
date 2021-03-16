@@ -7,7 +7,6 @@ import { DeviceMetricLabels, DeviceOnline } from './types';
 import { router } from './router';
 import { downSpeedMetric } from './mapper';
 import { speed } from './speed';
-import dedent from 'dedent';
 
 export const createApp = () => {
     const getDevices = router(fetch);
