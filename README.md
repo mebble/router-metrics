@@ -6,6 +6,7 @@ Following the Prometheus guide on [writing exporters](https://prometheus.io/docs
 
 ## Requirements
 
+- A Tenda router
 - [Node.js](https://nodejs.org/en/download/)
 - [Prometheus](https://prometheus.io/download/)
 - [Grafana](https://grafana.com/oss/grafana/)
