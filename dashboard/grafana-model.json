@@ -46,8 +46,114 @@
     "gnetId": null,
     "graphTooltip": 0,
     "id": null,
+    "iteration": 1615916400911,
     "links": [],
     "panels": [
+        {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "${DS_PROMETHEUS}",
+            "fieldConfig": {
+                "defaults": {
+                    "custom": {}
+                },
+                "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+                "h": 7,
+                "w": 24,
+                "x": 0,
+                "y": 0
+            },
+            "hiddenSeries": false,
+            "id": 6,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": false,
+                "rightSide": true,
+                "show": true,
+                "sort": "avg",
+                "sortDesc": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null as zero",
+            "options": {
+                "alertThreshold": true
+            },
+            "percentage": false,
+            "pluginVersion": "7.3.5",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "router_device_download_speed_bytes_per_second{device_name=\"$device\"}",
+                    "interval": "",
+                    "legendFormat": "Download speed",
+                    "refId": "A"
+                },
+                {
+                    "expr": "router_device_upload_speed_bytes_per_second{device_name=\"$device\"}",
+                    "interval": "",
+                    "legendFormat": "Upload speed",
+                    "refId": "B"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "Upload/Download Speed of Device: $device",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": true
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
         {
             "aliasColors": {},
             "bars": false,
@@ -66,7 +172,7 @@
                 "h": 12,
                 "w": 12,
                 "x": 0,
-                "y": 0
+                "y": 7
             },
             "hiddenSeries": false,
             "id": 2,
@@ -165,7 +271,7 @@
                 "h": 12,
                 "w": 12,
                 "x": 12,
-                "y": 0
+                "y": 7
             },
             "hiddenSeries": false,
             "id": 4,
@@ -253,7 +359,31 @@
     "style": "dark",
     "tags": [],
     "templating": {
-        "list": []
+        "list": [
+            {
+                "allValue": null,
+                "current": {},
+                "datasource": "${DS_PROMETHEUS}",
+                "definition": "label_values(router_device_download_speed_bytes_per_second, device_name)",
+                "error": null,
+                "hide": 0,
+                "includeAll": false,
+                "label": null,
+                "multi": false,
+                "name": "device",
+                "options": [],
+                "query": "label_values(router_device_download_speed_bytes_per_second, device_name)",
+                "refresh": 1,
+                "regex": "",
+                "skipUrlSync": false,
+                "sort": 0,
+                "tagValuesQuery": "",
+                "tags": [],
+                "tagsQuery": "",
+                "type": "query",
+                "useTags": false
+            }
+        ]
     },
     "time": {
         "from": "now-15m",
@@ -263,5 +393,5 @@
     "timezone": "",
     "title": "Router Internet Usage",
     "uid": "jtZGp18Mk",
-    "version": 11
+    "version": 13
 }
