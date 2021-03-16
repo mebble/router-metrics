@@ -2,10 +2,10 @@ import express from 'express';
 import { Gauge, Registry } from 'prom-client';
 import fetch from 'node-fetch';
 
-import { DownloadMetric, RouterUpMetric } from './constants';
+import { DownloadMetric, RouterUpMetric, UploadMetric } from './constants';
 import { DeviceMetricLabels, DeviceOnline } from './types';
 import { router } from './router';
-import { downSpeedMetric } from './mapper';
+import { downSpeedMetric, upSpeedMetric } from './mapper';
 import { speed } from './speed';
 
 export const createApp = () => {
@@ -14,15 +14,22 @@ export const createApp = () => {
         name: RouterUpMetric.name,
         help: RouterUpMetric.help,
     });
+    const uploadSpeedGauge = new Gauge<keyof DeviceMetricLabels>({
+        name: UploadMetric.name,
+        help: UploadMetric.help,
+        labelNames: ['device_name', 'device_mac', 'connection_type'],
+    });
     const downloadSpeedGauge = new Gauge<keyof DeviceMetricLabels>({
         name: DownloadMetric.name,
         help: DownloadMetric.help,
         labelNames: ['device_name', 'device_mac', 'connection_type'],
     });
+    const setUploadSpeeds = speed(uploadSpeedGauge);
     const setDownloadSpeeds = speed(downloadSpeedGauge);
 
     const registry = new Registry();
     registry.registerMetric(routerUpGauge);
+    registry.registerMetric(uploadSpeedGauge);
     registry.registerMetric(downloadSpeedGauge);
 
     const app = express();
@@ -44,6 +51,8 @@ export const createApp = () => {
         }
         const downloadSpeeds = devices.map(downSpeedMetric);
         setDownloadSpeeds(downloadSpeeds);
+        const uploadSpeeds = devices.map(upSpeedMetric);
+        setUploadSpeeds(uploadSpeeds);
 
         const exporterResponse = await registry.metrics();
 

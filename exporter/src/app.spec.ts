@@ -1,7 +1,7 @@
 import supertest, { SuperTest, Test } from 'supertest';
 import nock from 'nock';
 import dedent from 'dedent';
-import { RouterPaths, DownloadMetric, RouterUpMetric } from './constants';
+import { RouterPaths, DownloadMetric, UploadMetric, RouterUpMetric } from './constants';
 import { createApp } from './app';
 
 let request: SuperTest<Test>;
@@ -18,10 +18,10 @@ describe('app ping', () => {
     });
 });
 
-describe('app download metrics', () => {
+describe('app upload/download metrics', () => {
     const routerMock = nock(`http://${process.env.ROUTER_HOST}:${process.env.ROUTER_PORT}`);
 
-    test('should return no download metrics and zero router_up metric when the router returns non-2xx response', async () => {
+    test('should return no upload/download metrics and zero router_up metric when the router returns non-2xx response', async () => {
         routerMock.get(RouterPaths.OnlineList)
             .reply(503);
         const expectedResponse = dedent`
@@ -29,6 +29,9 @@ describe('app download metrics', () => {
             # TYPE ${RouterUpMetric.name} gauge
             ${RouterUpMetric.name} 0
 
+            # HELP ${UploadMetric.name} ${UploadMetric.help}
+            # TYPE ${UploadMetric.name} gauge
+
             # HELP ${DownloadMetric.name} ${DownloadMetric.help}
             # TYPE ${DownloadMetric.name} gauge
         ` + '\n';
@@ -38,7 +41,7 @@ describe('app download metrics', () => {
         expect(response.text).toEqual(expectedResponse);
     });
 
-    test('should return no download metrics and one router_up metric when the router returns empty online devices list', async () => {
+    test('should return no upload/download metrics and one router_up metric when the router returns empty online devices list', async () => {
         routerMock.get(RouterPaths.OnlineList)
             .reply(200, '{"onlineList": []}', { 'content-type': 'text/plain' });
         const expectedResponse = dedent`
@@ -46,6 +49,9 @@ describe('app download metrics', () => {
             # TYPE ${RouterUpMetric.name} gauge
             ${RouterUpMetric.name} 1
 
+            # HELP ${UploadMetric.name} ${UploadMetric.help}
+            # TYPE ${UploadMetric.name} gauge
+
             # HELP ${DownloadMetric.name} ${DownloadMetric.help}
             # TYPE ${DownloadMetric.name} gauge
         ` + '\n';
@@ -55,7 +61,7 @@ describe('app download metrics', () => {
         expect(response.text).toEqual(expectedResponse);
     });
 
-    test('should return download metrics and one router_up metric when the router returns online devices', async () => {
+    test('should return upload/download metrics and one router_up metric when the router returns online devices', async () => {
         routerMock.get(RouterPaths.OnlineList)
             .reply(200, dedent`
                 {
@@ -87,6 +93,11 @@ describe('app download metrics', () => {
             # HELP ${RouterUpMetric.name} ${RouterUpMetric.help}
             # TYPE ${RouterUpMetric.name} gauge
             ${RouterUpMetric.name} 1
+
+            # HELP ${UploadMetric.name} ${UploadMetric.help}
+            # TYPE ${UploadMetric.name} gauge
+            ${UploadMetric.name}{device_name="OnePlus3T",device_mac="mac",connection_type="wifi"} 1970
+            ${UploadMetric.name}{device_name="iPhone",device_mac="iPhoneMac",connection_type="wifi"} 9000
 
             # HELP ${DownloadMetric.name} ${DownloadMetric.help}
             # TYPE ${DownloadMetric.name} gauge
