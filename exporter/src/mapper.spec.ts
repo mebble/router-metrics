@@ -17,9 +17,9 @@ const baseInput: DeviceOnline = {
 describe('downSpeedMetric', () => {
     test('should map metric labels', () => {
         const expectedLabels: DeviceMetricLabels = {
-            deviceName: baseInput.qosListHostname,
-            deviceMac: baseInput.qosListMac,
-            connectionType: baseInput.qosListConnectType
+            device_name: baseInput.qosListHostname,
+            device_mac: baseInput.qosListMac,
+            connection_type: baseInput.qosListConnectType
         };
 
         const metric = downSpeedMetric(baseInput);
@@ -39,9 +39,9 @@ describe('downSpeedMetric', () => {
 describe('upSpeedMetric', () => {
     test('should map metric labels', () => {
         const expectedLabels: DeviceMetricLabels = {
-            deviceName: baseInput.qosListHostname,
-            deviceMac: baseInput.qosListMac,
-            connectionType: baseInput.qosListConnectType
+            device_name: baseInput.qosListHostname,
+            device_mac: baseInput.qosListMac,
+            connection_type: baseInput.qosListConnectType
         };
 
         const metric = upSpeedMetric(baseInput);

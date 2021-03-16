@@ -14,9 +14,9 @@ export type DeviceOnline = {
 };
 
 export type DeviceMetricLabels = {
-    deviceName: string;
-    deviceMac: string;
-    connectionType: string;
+    device_name: string;
+    device_mac: string;
+    connection_type: string;
 };
 
 export type DeviceMetric = {

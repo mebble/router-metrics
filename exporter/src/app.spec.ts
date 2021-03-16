@@ -65,8 +65,8 @@ describe('app download metrics', () => {
         const expectedResponse = dedent`
             # HELP ${DownloadMetric.name} ${DownloadMetric.help}
             # TYPE ${DownloadMetric.name} gauge
-            ${DownloadMetric.name}{deviceName="OnePlus3T",deviceMac="mac",connectionType="wifi"} 6230
-            ${DownloadMetric.name}{deviceName="iPhone",deviceMac="iPhoneMac",connectionType="wifi"} 23010
+            ${DownloadMetric.name}{device_name="OnePlus3T",device_mac="mac",connection_type="wifi"} 6230
+            ${DownloadMetric.name}{device_name="iPhone",device_mac="iPhoneMac",connection_type="wifi"} 23010
         ` + '\n';
 
         const response = await request.get('/metrics').expect(200);

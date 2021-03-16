@@ -28,17 +28,17 @@ describe('set speed metric', () => {
         {
             value: 10,
             labels: {
-                deviceName: 'name1',
-                deviceMac: 'mac1',
-                connectionType: 'type1',
+                device_name: 'name1',
+                device_mac: 'mac1',
+                connection_type: 'type1',
             }
         },
         {
             value: 20,
             labels: {
-                deviceName: 'name2',
-                deviceMac: 'mac2',
-                connectionType: 'type2',
+                device_name: 'name2',
+                device_mac: 'mac2',
+                connection_type: 'type2',
             }
         },
     ];
@@ -70,15 +70,15 @@ describe('set speed metric', () => {
         setSpeedMetric(devices);
 
         expect(labels.firstCall.calledWithExactly({
-            deviceName: 'name1',
-            deviceMac: 'mac1',
-            connectionType: 'type1',
+            device_name: 'name1',
+            device_mac: 'mac1',
+            connection_type: 'type1',
         })).toBe(true);
         expect(set.firstCall.calledWithExactly(10)).toBe(true);
         expect(labels.secondCall.calledWithExactly({
-            deviceName: 'name2',
-            deviceMac: 'mac2',
-            connectionType: 'type2',
+            device_name: 'name2',
+            device_mac: 'mac2',
+            connection_type: 'type2',
         })).toBe(true);
         expect(set.secondCall.calledWithExactly(20)).toBe(true);
     });

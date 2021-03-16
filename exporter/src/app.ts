@@ -13,7 +13,7 @@ export const createApp = () => {
     const downloadSpeedGauge = new Gauge<keyof DeviceMetricLabels>({
         name: DownloadMetric.name,
         help: DownloadMetric.help,
-        labelNames: ['deviceName', 'deviceMac', 'connectionType'],
+        labelNames: ['device_name', 'device_mac', 'connection_type'],
     });
     const setDownloadSpeeds = speed(downloadSpeedGauge);
     const registry = new Registry();
