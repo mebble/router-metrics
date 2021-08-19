@@ -15,13 +15,8 @@ Following the Prometheus guide on [writing exporters](https://prometheus.io/docs
 
 I've set up a Grafana dashboard, which has been exported to a JSON model at [/dashboard/grafana-model.json](/dashboard/grafana-model.json).
 
-Screenshots of the current dashboards:
-
-![Download speed metrics panel](/docs/panel-download-speed.png)
-*Download speed metrics*
-
-![Upload speed metrics panel](/docs/panel-upload-speed.png)
-*Upload speed metrics*
+![Average download speed metrics panel](/docs/panel-avg-download-speed.png)
+*Average download speed of each device connected to the wifi router*
 
 The JSON model will be updated regularly, so these screenshots are likely to be outdated soon. But they likely won't change much.
 
